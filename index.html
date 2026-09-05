@@ -1,0 +1,584 @@
+<meta charset="utf-8">
+<title>POOP — three floors, one shine</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="POOP. three floors. the bottom one holds up the top one. bring three friends.">
+<link rel="icon" href="assets/favicon.png">
+<meta property="og:title" content="POOP">
+<meta property="og:description" content="three floors. one shine. bring three friends.">
+<meta property="og:image" content="assets/favicon.png">
+
+<script>
+/* SETTINGS - everything is changed here, at the top, in ONE place */
+window.CONTRACT = "";  /* contract address. empty = "soon" */
+window.TWITTER  = "";  /* link to X. empty = plain x.com link */
+document.addEventListener('DOMContentLoaded', function(){
+  var CA=(window.CONTRACT||"").trim(), TW=(window.TWITTER||"").trim();
+  document.querySelectorAll('a[href]').forEach(function(a){
+    var h=a.getAttribute('href')||"";
+    if(h.indexOf('pump.fun')>-1){ if(CA) a.href='https://pump.fun/coin/'+CA; }
+    else if(h.indexOf('dexscreener')>-1){ if(CA) a.href='https://dexscreener.com/solana/'+CA; }
+    else if(h.indexOf('x.com')>-1||h.indexOf('twitter.com')>-1){ if(TW) a.href=TW; }
+  });
+  if(CA){
+    document.querySelectorAll('.ca b, .ca-val').forEach(function(b){ b.textContent=CA; });
+    document.querySelectorAll('.ca, .ca-row').forEach(function(el){
+      el.title=CA; el.style.cursor='pointer';
+      el.addEventListener('click', function(){ if(navigator.clipboard) navigator.clipboard.writeText(CA); });
+    });
+  }
+});
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --acid:#acfa06;
+  --acid-2:#c8ff5a;
+  --acid-dark:#7fbd00;
+  --ink:#0d1a00;
+  --ink-soft:#2a3d10;
+  --chrome-hi:#ffffff;
+  --chrome-mid:#dfe6dc;
+  --chrome-lo:#8d9a88;
+  --chrome-deep:#4e5a4a;
+  --paper:#f2fbe2;
+  --disp:'Archivo Black',Impact,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--acid);
+  color:var(--ink);
+  font-family:var(--mono);
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased;
+}
+body.locked{overflow:hidden;height:100svh}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:var(--ink);color:var(--acid)}
+
+/* ---------- films ---------- */
+.film{position:fixed;inset:0;pointer-events:none;z-index:90}
+.grain{background-image:radial-gradient(rgba(255,255,255,.6) .5px,transparent .6px);background-size:3px 3px;mix-blend-mode:overlay;opacity:.18}
+.vignette{background:radial-gradient(ellipse at 50% 42%,#0000 54%,rgba(20,40,0,.42) 100%)}
+
+/* ---------- gate ---------- */
+#gate{position:fixed;inset:0;z-index:120;background:var(--acid);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:26px;cursor:pointer}
+#gate.gone{opacity:0;pointer-events:none;transition:opacity .5s}
+.gate-mark{font-family:var(--disp);font-size:clamp(52px,13vw,150px);letter-spacing:-.03em;line-height:.85;text-align:center}
+.gate-sub{font-size:12px;letter-spacing:.34em;text-transform:uppercase;border:2px solid var(--ink);padding:12px 22px;background:var(--paper);box-shadow:5px 5px 0 var(--ink);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}}
+.gate-note{font-size:11px;letter-spacing:.2em;opacity:.65}
+
+/* ---------- preloader ---------- */
+#load{position:fixed;inset:0;z-index:110;background:var(--acid);display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;padding:24px}
+#load.on{display:flex}
+#load.gone{opacity:0;pointer-events:none;transition:opacity .45s}
+.bar{width:min(420px,80vw);height:22px;border:2px solid var(--ink);background:var(--paper);box-shadow:5px 5px 0 var(--ink);overflow:hidden}
+.bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--chrome-deep),var(--chrome-hi),var(--chrome-lo));transition:width .25s}
+.load-txt{font-size:12px;letter-spacing:.22em;text-transform:uppercase;min-height:16px;text-align:center}
+.skip{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid var(--ink);cursor:pointer;padding:2px 0;color:var(--ink)}
+
+/* ---------- chrome type ---------- */
+.chrome{
+  font-family:var(--disp);
+  background:linear-gradient(180deg,#ffffff 4%,#e9f0e6 26%,#8d9a88 47%,#ffffff 54%,#f6faf3 66%,#a9b5a4 84%,#5f6b5b 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:7px var(--ink);paint-order:stroke fill;
+  filter:drop-shadow(0 7px 0 var(--acid-dark)) drop-shadow(0 13px 0 var(--ink)) drop-shadow(0 22px 26px rgba(10,30,0,.45));
+}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:70;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14px;background:var(--ink);color:var(--acid);font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.topbar .dot{width:8px;height:8px;background:var(--acid);border-radius:50%;display:inline-block;margin-right:8px;animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.15}}
+.topbar nav{display:flex;gap:16px}
+.topbar nav a{text-decoration:none;opacity:.75}
+.topbar nav a:hover{opacity:1;text-decoration:underline}
+
+/* ---------- layout ---------- */
+main{padding-top:34px}
+section{padding:clamp(46px,7vw,96px) clamp(16px,5vw,60px);position:relative}
+.h{font-family:var(--disp);font-size:clamp(24px,4.4vw,46px);letter-spacing:-.02em;margin:0 0 8px}
+.kicker{font-size:11px;letter-spacing:.32em;text-transform:uppercase;opacity:.6;margin-bottom:18px}
+.wrap{max-width:1160px;margin:0 auto}
+
+/* ---------- hero ---------- */
+#hero{min-height:calc(100svh - 34px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:20px;overflow:hidden}
+#hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,var(--acid-2) 0%,var(--acid) 46%,var(--acid-dark) 130%);z-index:-2}
+.rays{position:absolute;inset:-30%;z-index:-1;background:repeating-conic-gradient(from 0deg at 50% 48%,rgba(255,255,255,.16) 0deg 6deg,transparent 6deg 12deg);animation:spin 70s linear infinite;opacity:.55}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wordmark{font-size:clamp(74px,19vw,250px);line-height:.82;letter-spacing:-.04em;margin:0}
+.tick{display:inline-block;margin-top:6px;font-size:12px;letter-spacing:.4em;text-transform:uppercase;background:var(--ink);color:var(--acid);padding:7px 16px}
+.slogan{max-width:640px;margin:22px auto 0;font-size:clamp(14px,1.7vw,18px);line-height:1.55}
+
+/* poop stage */
+.stage{position:relative;width:min(440px,74vw);margin:26px auto 0;filter:drop-shadow(0 26px 22px rgba(20,50,0,.35))}
+.stage img{animation:float 5.5s ease-in-out infinite;will-change:transform}
+@keyframes float{50%{transform:translateY(-16px) rotate(-1.2deg)}}
+.hot{position:absolute;left:0;right:0;cursor:crosshair}
+.hot:after{content:attr(data-lab);position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.92);opacity:0;transition:.18s;white-space:nowrap;background:var(--ink);color:var(--acid);font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:7px 12px;pointer-events:none}
+.hot:hover:after{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.hot:hover{background:radial-gradient(ellipse at 50% 50%,rgba(255,255,255,.55),transparent 70%)}
+#h3{top:2%;height:36%}
+#h2{top:38%;height:24%}
+#h1{top:62%;height:36%}
+.scrollcue{margin-top:26px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.7;animation:bob 2s infinite}
+@keyframes bob{50%{transform:translateY(6px)}}
+
+/* ---------- marquee ---------- */
+.mq{background:var(--ink);color:var(--acid);padding:11px 0;overflow:hidden;white-space:nowrap;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
+.mq span{display:inline-block;font-size:13px;letter-spacing:.24em;text-transform:uppercase;animation:mq 26s linear infinite;padding-left:100%}
+.mq.rev span{animation-direction:reverse;color:var(--acid-2)}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+/* ---------- panels ---------- */
+.panel{background:var(--paper);border:3px solid var(--ink);box-shadow:9px 9px 0 var(--ink);padding:clamp(18px,3vw,32px)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+.floors{display:flex;flex-direction:column;gap:12px}
+.floor{border:3px solid var(--ink);background:linear-gradient(180deg,#fff,#dfe6dc 55%,#9aa795);padding:14px 16px;box-shadow:6px 6px 0 var(--ink);transition:.16s}
+.floor:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--ink)}
+.floor h4{margin:0 0 5px;font-family:var(--disp);font-size:15px;letter-spacing:.02em}
+.floor p{margin:0;font-size:13px;line-height:1.5}
+.floor small{display:block;font-size:10px;letter-spacing:.28em;text-transform:uppercase;opacity:.6;margin-bottom:4px}
+.f3{width:56%}
+.f2{width:78%}
+.f1{width:100%}
+
+/* ---------- math ---------- */
+.mathbox{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:center}
+.counter{font-family:var(--disp);font-size:clamp(38px,8vw,86px);line-height:1;letter-spacing:-.03em;word-break:break-all}
+.mathlabel{font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.6;margin-bottom:6px}
+input[type=range]{width:100%;accent-color:var(--ink);height:26px}
+.verdict{margin-top:14px;font-size:13px;line-height:1.55;min-height:60px;border-left:4px solid var(--ink);padding-left:12px}
+.pyr{display:flex;flex-direction:column;align-items:center;gap:4px}
+.pyr i{display:block;height:11px;background:linear-gradient(90deg,var(--chrome-deep),var(--chrome-hi),var(--chrome-lo));border:2px solid var(--ink);transition:.2s}
+.pyr i.you{background:var(--ink)}
+.youare{margin-top:10px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;text-align:center}
+
+/* ---------- lore ---------- */
+.lore{columns:2;column-gap:34px;font-size:14px;line-height:1.62;max-width:980px}
+.lore p{margin:0 0 15px;break-inside:avoid}
+.lore p:first-letter{font-family:var(--disp);font-size:1.9em;line-height:.9;float:left;margin:2px 7px 0 0}
+
+/* ---------- floor cam ---------- */
+.tv{max-width:720px;margin:0 auto;border:5px solid var(--ink);background:var(--ink);box-shadow:11px 11px 0 var(--acid-dark);position:relative}
+.tvscreen{position:relative;aspect-ratio:4/3;overflow:hidden;background:radial-gradient(circle at 50% 45%,#3a4a2c,#101a06)}
+.ch{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
+.ch.on{display:flex}
+.ch img{width:62%;animation:tvspin 9s ease-in-out infinite}
+@keyframes tvspin{50%{transform:rotate(6deg) scale(1.05)}}
+.tvscan{position:absolute;inset:0;background:repeating-linear-gradient(rgba(0,0,0,.28) 0 1px,transparent 1px 3px);pointer-events:none}
+.tvroll{position:absolute;left:0;right:0;height:30%;background:linear-gradient(180deg,transparent,rgba(255,255,255,.13),transparent);animation:roll 6s linear infinite;pointer-events:none}
+@keyframes roll{from{top:-40%}to{top:110%}}
+.tvbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;color:var(--acid);font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+.btn-ch{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;background:var(--acid);color:var(--ink);border:2px solid var(--acid);padding:6px 12px;cursor:pointer;box-shadow:inset 2px 2px 0 #fff,inset -2px -2px 0 var(--acid-dark)}
+.btn-ch:active{transform:translate(2px,2px)}
+.diag{width:76%;color:var(--acid)}
+
+/* ---------- gallery ---------- */
+.gal{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;perspective:1200px;perspective-origin:50% 40%}
+.gal button{padding:0;border:3px solid var(--ink);background:var(--acid-2);cursor:pointer;overflow:hidden;box-shadow:6px 6px 0 var(--ink);transition:transform .22s}
+.gal button:nth-child(3n+1){transform:rotateY(19deg) rotateX(-5deg) translateZ(-20px)}
+.gal button:nth-child(3n+2){transform:rotateY(-4deg) rotateX(7deg) translateZ(10px)}
+.gal button:nth-child(3n+3){transform:rotateY(-20deg) rotateX(-3deg) translateZ(-14px)}
+.gal button:hover{transform:rotateY(0) rotateX(0) translateZ(48px)}
+.tile{aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.tile img{width:74%}
+.peek{display:flex;gap:10px;overflow-x:auto;padding:14px 0 4px;scrollbar-width:thin}
+.peek div{flex:0 0 108px;height:108px;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.peek img{width:74%}
+
+/* lightbox */
+#lb{position:fixed;inset:0;z-index:100;background:rgba(10,26,0,.93);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:20px}
+#lb.on{display:flex}
+#lb .frame{max-width:min(560px,86vw);width:100%;aspect-ratio:1;border:4px solid var(--acid);display:flex;align-items:center;justify-content:center}
+#lb .frame img{width:76%}
+#lb p{color:var(--acid);font-size:13px;max-width:520px;text-align:center;margin:0;line-height:1.5}
+.lbnav{display:flex;gap:12px}
+.lbbtn{font-family:var(--mono);font-size:13px;background:var(--acid);color:var(--ink);border:2px solid var(--ink);padding:8px 16px;cursor:pointer;letter-spacing:.16em}
+
+/* ---------- CA + buttons ---------- */
+.ca-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;background:var(--ink);color:var(--acid);padding:14px 18px;font-size:clamp(10px,1.5vw,14px);letter-spacing:.1em;cursor:pointer;max-width:960px;margin:0 auto;word-break:break-all}
+.ca-row b{font-weight:600}
+.btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--disp);font-size:15px;letter-spacing:.02em;padding:14px 26px;background:linear-gradient(180deg,#fff,#dfe6dc 55%,#9aa795);border:3px solid var(--ink);box-shadow:0 6px 0 var(--ink);transition:.12s}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}
+.btn:hover{background:linear-gradient(180deg,#fff,#f0f6ec 55%,#c3cfbe)}
+
+/* mobile CA bar */
+.mobca{display:none;position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--ink);color:var(--acid);padding:10px 12px;font-size:10px;letter-spacing:.12em;text-align:center;word-break:break-all;cursor:pointer}
+
+footer{background:var(--ink);color:var(--acid);text-align:center;padding:30px 16px 40px;font-size:11px;letter-spacing:.24em;text-transform:uppercase}
+footer .big{font-family:var(--disp);font-size:clamp(30px,9vw,90px);letter-spacing:-.03em;line-height:.9;margin-bottom:14px;color:var(--acid)}
+
+.sndbox{position:fixed;right:12px;bottom:12px;z-index:75;display:flex;align-items:center;gap:8px;background:var(--ink);color:var(--acid);padding:7px 10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
+.sndbox button{background:var(--acid);color:var(--ink);border:none;font-family:var(--mono);font-size:10px;letter-spacing:.14em;padding:4px 8px;cursor:pointer;text-transform:uppercase}
+.sndbox input{width:56px;accent-color:var(--acid)}
+
+@media (max-width:900px){
+  .grid2,.mathbox{grid-template-columns:1fr}
+  .lore{columns:1}
+  .gal{grid-template-columns:repeat(2,1fr)}
+  .gal button,.gal button:nth-child(3n+1),.gal button:nth-child(3n+2),.gal button:nth-child(3n+3){transform:none}
+  .f3,.f2,.f1{width:100%}
+  .mobca{display:block}
+  footer{padding-bottom:64px}
+  .sndbox{bottom:46px}
+  .chrome{-webkit-text-stroke-width:4px}
+  .topbar nav{display:none}
+  .topbar{font-size:10px;letter-spacing:.14em}
+}
+@media (hover:none){ .hot{display:none} }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<!-- ================= GATE ================= -->
+<div id="gate">
+  <h1 class="gate-mark chrome">POOP</h1>
+  <div class="gate-sub">click to enter the pyramid</div>
+  <div class="gate-note">three floors · one shine</div>
+</div>
+
+<!-- ================= PRELOADER ================= -->
+<div id="load">
+  <div class="load-txt" id="ltx">polishing floor 3…</div>
+  <div class="bar"><i id="lbar"></i></div>
+  <button class="skip" id="lskip">skip</button>
+</div>
+
+<!-- ================= TOP BAR ================= -->
+<div class="topbar">
+  <div><span class="dot"></span>floor 1 · you are here</div>
+  <nav>
+    <a href="#structure">structure</a>
+    <a href="#math">the math</a>
+    <a href="#lore">what is this</a>
+    <a href="#gallery">gallery</a>
+  </nav>
+  <div id="clock">day 1</div>
+</div>
+
+<main>
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div class="rays"></div>
+  <h1 class="wordmark chrome">POOP</h1>
+  <div class="tick">$POOP</div>
+  <p class="slogan">i am a pyramid. three floors, wide at the bottom, shiny little curl at the top. everybody who walks in says the same sentence and everybody stays on the floor they walked in on.</p>
+  <div class="stage">
+    <img src="assets/cut-poop.webp" alt="the pyramid itself: three chrome floors stacked, the top one polished until it hurts to look at" id="hero-img">
+    <div class="hot" id="h3" data-lab="floor 3 — the curl · gets the light"></div>
+    <div class="hot" id="h2" data-lab="floor 2 — the middle · holds the curl"></div>
+    <div class="hot" id="h1" data-lab="floor 1 — the base · holds everything"></div>
+  </div>
+  <div class="scrollcue">scroll down · the stairs only go around</div>
+</section>
+
+<div class="mq"><span>three floors&nbsp;·&nbsp;one shine&nbsp;·&nbsp;bring three friends&nbsp;·&nbsp;they bring three friends&nbsp;·&nbsp;the curl is fine&nbsp;·&nbsp;thank you for holding the structure&nbsp;·&nbsp;three floors&nbsp;·&nbsp;one shine&nbsp;·&nbsp;bring three friends&nbsp;·&nbsp;they bring three friends&nbsp;·&nbsp;the curl is fine&nbsp;·&nbsp;thank you for holding the structure&nbsp;·&nbsp;</span></div>
+
+<!-- ================= STRUCTURE ================= -->
+<section id="structure">
+  <div class="wrap">
+    <div class="kicker">01 — the structure</div>
+    <h2 class="h">THREE FLOORS</h2>
+    <div class="grid2" style="margin-top:22px">
+      <div class="panel">
+        <div class="floors">
+          <div class="floor f3"><small>floor 3</small><h4>THE CURL</h4><p>the pointy bit on top that catches all the light in every photo ever taken of me. it does not carry anything, it does not hold anything up, it simply sits there being polished by the two floors underneath it. every single person who arrives here is completely certain they will end up as the curl.</p></div>
+          <div class="floor f2"><small>floor 2</small><h4>THE MIDDLE</h4><p>wider, heavier, slightly less shiny, and permanently looking upwards. the middle floor spends its entire life explaining to the base floor how close it is to becoming the curl. it has been saying this since the day i was stacked and it has never once been wrong on purpose.</p></div>
+          <div class="floor f1"><small>floor 1</small><h4>THE BASE</h4><p>the widest one, the one doing all the actual work, the one you are standing on right now whether you like the news or not. if the base ever decides to step out for five minutes the other two floors become a puddle with excellent branding.</p></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="kicker" style="margin-bottom:10px">how you move up</div>
+        <p style="font-size:14px;line-height:1.6;margin:0 0 14px">you bring three people. those three people each bring three people. those nine people each bring three people. one floor gets added underneath you, which technically means you went up, and the curl stays exactly where it has always been, which technically means nothing happened.</p>
+        <p style="font-size:14px;line-height:1.6;margin:0 0 18px">the stairs are on the inside. they are real stairs, they are well lit, they are swept every morning. they only go around.</p>
+        <div class="stage" style="width:64%;margin:0 auto"><img src="assets/cut-poop.webp" alt="the same three floors, photographed again, in case you thought there were four"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= THE MATH ================= -->
+<section id="math" style="background:var(--acid-dark)">
+  <div class="wrap">
+    <div class="kicker">02 — the math</div>
+    <h2 class="h">BRING THREE FRIENDS</h2>
+    <div class="panel" style="margin-top:22px">
+      <div class="mathbox">
+        <div>
+          <div class="mathlabel">people needed at level <b id="lvnum">6</b></div>
+          <div class="counter" id="ppl">729</div>
+          <div style="margin-top:20px">
+            <div class="mathlabel">drag to add floors underneath you</div>
+            <input type="range" id="lv" min="1" max="26" value="6">
+          </div>
+          <div class="verdict" id="verdict"></div>
+        </div>
+        <div>
+          <div class="pyr" id="pyr"></div>
+          <div class="youare">■ = the floor you are standing on</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="mq rev"><span>you bring three&nbsp;·&nbsp;they bring three&nbsp;·&nbsp;we run out of people at level 21&nbsp;·&nbsp;the curl is still shiny&nbsp;·&nbsp;you bring three&nbsp;·&nbsp;they bring three&nbsp;·&nbsp;we run out of people at level 21&nbsp;·&nbsp;the curl is still shiny&nbsp;·&nbsp;</span></div>
+
+<!-- ================= LORE ================= -->
+<section id="lore">
+  <div class="wrap">
+    <div class="kicker">03 — what is this</div>
+    <h2 class="h">WHAT IS THIS</h2>
+    <div class="lore" style="margin-top:20px">
+      <p>i am shaped like a pyramid on purpose. three floors, stacked, wide at the bottom, narrow at the top, exactly the shape somebody draws on a whiteboard right before the room goes quiet. i did not choose this shape, but i have grown extremely comfortable inside it.</p>
+      <p>the bottom floor holds up the middle floor. the middle floor holds up the curl. the curl holds up absolutely nothing and receives, by my count, about ninety per cent of all available lighting. this arrangement has never been challenged because everyone is busy looking upwards.</p>
+      <p>people arrive here every day, look at me for a while, and then say the sentence. the sentence is always the same and it is always delivered with total confidence: i will be the curl. nobody has ever been the curl. the curl was already here, it is original equipment, and it is buffed twice a day by hands that are not its own.</p>
+      <p>you are welcome to climb. the stairs are real, the handrail is chrome, the lighting is genuinely lovely, and you can go up as long as you like. i just think it is fair to mention, before you start, that i checked the floor plan myself and the stairs only go around.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLOOR CAM ================= -->
+<section id="cam" style="background:var(--acid-2)">
+  <div class="wrap">
+    <div class="kicker">04 — floor cam</div>
+    <h2 class="h" style="margin-bottom:22px">LIVE FROM THE STRUCTURE</h2>
+    <div class="tv">
+      <div class="tvscreen">
+        <div class="ch on" id="ch1"><img src="assets/cut-poop.webp" alt="floor cam channel one: nothing is happening and it is happening beautifully"></div>
+        <div class="ch" id="ch2">
+          <svg class="diag" viewBox="0 0 200 150" fill="none" stroke="currentColor" stroke-width="3">
+            <polygon points="100,14 190,140 10,140"></polygon>
+            <line x1="60" y1="98" x2="140" y2="98"></line>
+            <line x1="78" y1="56" x2="122" y2="56"></line>
+            <circle cx="100" cy="34" r="6" fill="currentColor"></circle>
+            <circle cx="86" cy="78" r="5" fill="currentColor"></circle><circle cx="114" cy="78" r="5" fill="currentColor"></circle>
+            <circle cx="52" cy="122" r="5" fill="currentColor"></circle><circle cx="76" cy="122" r="5" fill="currentColor"></circle><circle cx="100" cy="122" r="5" fill="currentColor"></circle><circle cx="124" cy="122" r="5" fill="currentColor"></circle><circle cx="148" cy="122" r="5" fill="currentColor"></circle>
+          </svg>
+        </div>
+        <div class="tvscan"></div><div class="tvroll"></div>
+      </div>
+      <div class="tvbar">
+        <span id="chlab">ch 01 · floor 3 · polished</span>
+        <button class="btn-ch" id="chbtn">ch +</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="kicker">05 — the archive</div>
+    <h2 class="h" style="margin-bottom:22px">EVIDENCE</h2>
+    <div class="gal" id="gal"></div>
+    <div class="kicker" style="margin:28px 0 0">sneak peek</div>
+    <div class="peek" id="peek"></div>
+  </div>
+</section>
+
+<!-- ================= CA ================= -->
+<section id="buy" style="background:var(--acid-dark)">
+  <div class="wrap" style="text-align:center">
+    <div class="kicker">06 — the ticker</div>
+    <h2 class="h" style="margin-bottom:20px">$POOP</h2>
+    <div class="ca-row ca">contract:&nbsp;<b>soon</b>&nbsp;<span style="opacity:.6">· click to copy</span></div>
+    <div class="btns">
+      <a class="btn" href="https://pump.fun" target="_blank" rel="noopener">BUY</a>
+      <a class="btn" href="https://x.com" target="_blank" rel="noopener">X</a>
+      <a class="btn" href="https://dexscreener.com" target="_blank" rel="noopener">CHART</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="big chrome" style="-webkit-text-stroke-color:var(--acid);filter:none">POOP</div>
+  <div>three floors · one shine · you are on floor 1</div>
+</footer>
+
+<div class="mobca ca">contract: <b>soon</b> — tap to copy</div>
+
+<div class="sndbox">
+  <button id="sndbtn">sound off</button>
+  <input type="range" id="vol" min="0" max="100" value="60">
+</div>
+
+<!-- lightbox -->
+<div id="lb">
+  <div class="frame" id="lbframe"><img id="lbimg" src="assets/cut-poop.webp" alt=""></div>
+  <p id="lbcap"></p>
+  <div class="lbnav">
+    <button class="lbbtn" id="lbprev">‹</button>
+    <button class="lbbtn" id="lbclose">esc</button>
+    <button class="lbbtn" id="lbnext">›</button>
+  </div>
+</div>
+
+<div class="film grain"></div>
+<div class="film vignette"></div>
+
+<script>
+(function(){
+  var IMG='assets/cut-poop.webp';
+
+  /* ---------- sound ---------- */
+  var actx=null, muted=true, vol=.6;
+  function blip(freq,type){
+    if(muted) return;
+    try{
+      if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+      var o=actx.createOscillator(), g=actx.createGain();
+      o.type=type||'square'; o.frequency.value=freq||220; g.gain.value=.05*vol;
+      o.connect(g); g.connect(actx.destination); o.start();
+      g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime+.09);
+      o.stop(actx.currentTime+.1);
+    }catch(e){}
+  }
+  var sb=document.getElementById('sndbtn');
+  sb.addEventListener('click',function(){ muted=!muted; sb.textContent=muted?'sound off':'sound on'; blip(420); });
+  document.getElementById('vol').addEventListener('input',function(){ vol=this.value/100; });
+
+  /* ---------- gate + preloader ---------- */
+  var gate=document.getElementById('gate'), load=document.getElementById('load'),
+      lbar=document.getElementById('lbar'), ltx=document.getElementById('ltx');
+  document.body.classList.add('locked');
+  var LINES=['polishing floor 3…','counting floor 1…','recruiting three friends…','sweeping the stairs…','checking the floor plan…','the stairs go around'];
+  var done=false;
+  function finish(){
+    if(done) return; done=true;
+    load.classList.add('gone'); document.body.classList.remove('locked');
+    setTimeout(function(){ load.style.display='none'; },500);
+  }
+  gate.addEventListener('click',function(){
+    muted=false; sb.textContent='sound on'; blip(160);
+    gate.classList.add('gone'); load.classList.add('on');
+    setTimeout(function(){ gate.style.display='none'; },500);
+    var p=0, i=0;
+    var t=setInterval(function(){
+      p+=Math.random()*16+7; if(p>100) p=100;
+      lbar.style.width=p+'%';
+      var ni=Math.min(LINES.length-1,Math.floor(p/100*LINES.length));
+      if(ni!==i){ i=ni; ltx.textContent=LINES[i]; blip(300+i*60); }
+      if(p>=100){ clearInterval(t); setTimeout(finish,420); }
+    },260);
+    setTimeout(finish,7000); /* safety */
+  });
+  document.getElementById('lskip').addEventListener('click',function(e){ e.stopPropagation(); finish(); });
+
+  /* ---------- the math ---------- */
+  var lv=document.getElementById('lv'), ppl=document.getElementById('ppl'),
+      lvnum=document.getElementById('lvnum'), pyr=document.getElementById('pyr'),
+      verdict=document.getElementById('verdict');
+  function fmt(n){
+    if(n<1e6) return n.toLocaleString('en-US');
+    if(n<1e9) return (n/1e6).toFixed(1)+' million';
+    if(n<1e12) return (n/1e9).toFixed(1)+' billion';
+    return (n/1e12).toFixed(1)+' trillion';
+  }
+  function verdictFor(lvl,total){
+    if(lvl<=3) return 'a small structure. three people, then nine. everybody still knows each other by name and nobody has said the sentence yet.';
+    if(lvl<=8) return 'the floor underneath you is filling up nicely. from up here it genuinely looks like you moved. you did not move. a floor appeared under your feet.';
+    if(lvl<=13) return 'that is more people than most cities. every one of them is standing under you saying the sentence about the curl, and they mean it exactly as much as you did.';
+    if(lvl<=20) return 'we are running low on humans. the recruiters have started recruiting the recruiters. the curl, i should mention, has not moved a millimetre in either direction.';
+    return 'we have officially run out of people on earth. there is nobody left to stand underneath the bottom floor. the curl is still up there, still shiny, still original equipment.';
+  }
+  function draw(){
+    var n=+lv.value, total=Math.pow(3,n);
+    lvnum.textContent=n; ppl.textContent=fmt(total);
+    verdict.textContent=verdictFor(n,total);
+    var rows=Math.min(n,14), html='';
+    for(var i=1;i<=rows;i++){
+      var w=Math.round(8+ i*(92/rows));
+      html+='<i style="width:'+w+'%" class="'+(i===2?'you':'')+'"></i>';
+    }
+    pyr.innerHTML=html;
+  }
+  lv.addEventListener('input',function(){ draw(); blip(220+ (+lv.value)*22,'sine'); });
+  draw();
+
+  /* ---------- floor cam ---------- */
+  var at=0, chs=[document.getElementById('ch1'),document.getElementById('ch2')],
+      labs=['ch 01 · floor 3 · polished','ch 02 · structure diagram · approved'];
+  document.getElementById('chbtn').addEventListener('click',function(){
+    at=(at+1)%chs.length;
+    chs.forEach(function(c,k){ c.classList.toggle('on',k===at); });
+    document.getElementById('chlab').textContent=labs[at];
+    blip(520,'sawtooth');
+  });
+
+  /* ---------- gallery ---------- */
+  var shots=[
+    {bg:'linear-gradient(180deg,#acfa06,#7fbd00)',f:'none',cap:'the structure at 9am, before anybody has said the sentence about becoming the curl.'},
+    {bg:'linear-gradient(180deg,#0d1a00,#2a3d10)',f:'brightness(1.15)',cap:'night shift. floor 1 stays exactly where it is, holding everything, in the dark, for free.'},
+    {bg:'linear-gradient(180deg,#ffffff,#dfe6dc)',f:'contrast(1.15)',cap:'official portrait, submitted for the brochure, approved unanimously by the curl.'},
+    {bg:'radial-gradient(circle,#c8ff5a,#7fbd00)',f:'hue-rotate(35deg)',cap:'week 14. somebody repainted the lobby and told the base floor it counts as a promotion.'},
+    {bg:'linear-gradient(135deg,#acfa06 0 50%,#0d1a00 50% 100%)',f:'saturate(.4)',cap:'the split shot they use in the presentation. left side: you now. right side: you later.'},
+    {bg:'linear-gradient(180deg,#7fbd00,#acfa06)',f:'invert(1) hue-rotate(180deg)',cap:'negative exposure, taken by accident, currently the most requested image in the archive.'},
+    {bg:'repeating-linear-gradient(45deg,#acfa06 0 18px,#c8ff5a 18px 36px)',f:'none',cap:'promotional wallpaper for the recruitment drive. three friends each, please, no exceptions.'},
+    {bg:'linear-gradient(180deg,#dfe6dc,#8d9a88)',f:'grayscale(1) contrast(1.2)',cap:'archive copy, filed under evidence, floor plan attached, stairs confirmed to go around.'}
+  ];
+  var gal=document.getElementById('gal'), peek=document.getElementById('peek'), h='';
+  shots.forEach(function(s,i){
+    h+='<button data-i="'+i+'"><div class="tile" style="background:'+s.bg+'"><img src="'+IMG+'" style="filter:'+s.f+'" alt="'+s.cap+'"></div></button>';
+  });
+  gal.innerHTML=h;
+  var ph='';
+  shots.concat(shots).forEach(function(s){ ph+='<div style="background:'+s.bg+'"><img src="'+IMG+'" style="filter:'+s.f+'" alt="'+s.cap+'"></div>'; });
+  peek.innerHTML=ph;
+
+  var lb=document.getElementById('lb'), lbimg=document.getElementById('lbimg'),
+      lbcap=document.getElementById('lbcap'), lbframe=document.getElementById('lbframe'), cur=0;
+  function open(i){
+    cur=(i+shots.length)%shots.length;
+    lbframe.style.background=shots[cur].bg;
+    lbimg.style.filter=shots[cur].f;
+    lbimg.alt=shots[cur].cap;
+    lbcap.textContent=shots[cur].cap;
+    lb.classList.add('on'); blip(660,'triangle');
+  }
+  gal.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(b) open(+b.dataset.i);
+  });
+  document.getElementById('lbclose').addEventListener('click',function(){ lb.classList.remove('on'); });
+  document.getElementById('lbprev').addEventListener('click',function(){ open(cur-1); });
+  document.getElementById('lbnext').addEventListener('click',function(){ open(cur+1); });
+  lb.addEventListener('click',function(e){ if(e.target===lb) lb.classList.remove('on'); });
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('on')) return;
+    if(e.key==='Escape') lb.classList.remove('on');
+    if(e.key==='ArrowLeft') open(cur-1);
+    if(e.key==='ArrowRight') open(cur+1);
+  });
+
+  /* ---------- copy feedback ---------- */
+  document.querySelectorAll('.ca,.ca-row').forEach(function(el){
+    el.addEventListener('click',function(){ blip(880,'sine'); });
+  });
+
+  /* ---------- top bar day counter ---------- */
+  var day=1;
+  setInterval(function(){ day++; document.getElementById('clock').textContent='day '+day; },9000);
+
+  /* ---------- hero parallax ---------- */
+  var img=document.getElementById('hero-img'), tx=0,ty=0,cx=0,cy=0;
+  window.addEventListener('pointermove',function(e){
+    tx=(e.clientX/innerWidth-.5)*2; ty=(e.clientY/innerHeight-.5)*2;
+  });
+  (function loop(){
+    cx+=(tx-cx)*.07; cy+=(ty-cy)*.07;
+    if(img) img.style.rotate=(cx*3).toFixed(2)+'deg';
+    var r=document.querySelector('.rays');
+    if(r) r.style.translate=(cx*-14)+'px '+(cy*-14)+'px';
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
