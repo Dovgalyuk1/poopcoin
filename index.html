@@ -1,10 +1,10 @@
 <meta charset="utf-8">
-<title>POOP — three floors, one shine</title>
+<title>MONEY POOP — step in it, money follows</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="POOP. three floors. the bottom one holds up the top one. bring three friends.">
+<meta name="description" content="POOP. step in it and money follows. everybody's grandmother knows the rule.">
 <link rel="icon" href="assets/favicon.png">
 <meta property="og:title" content="POOP">
-<meta property="og:description" content="three floors. one shine. bring three friends.">
+<meta property="og:description" content="step in it. money follows. the oldest rule there is.">
 <meta property="og:image" content="assets/favicon.png">
 
 <script>
@@ -110,9 +110,11 @@ section{padding:clamp(46px,7vw,96px) clamp(16px,5vw,60px);position:relative}
 
 /* ---------- hero ---------- */
 #hero{min-height:calc(100svh - 34px);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding-top:clamp(8px,2vh,24px);overflow:hidden}
-.herostack{position:relative;width:100%;display:flex;align-items:center;justify-content:center;height:clamp(300px,54svh,560px)}
-.herostack .wordmark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:0;width:100%}
-.herostack .stage{position:relative;z-index:1;margin:0}
+.herostack{position:relative;width:100%;display:flex;align-items:center;justify-content:center;gap:clamp(2px,1.2vw,20px);flex-wrap:nowrap}
+.premark{font-family:var(--disp);font-size:clamp(30px,7vw,96px);line-height:.9;letter-spacing:.06em;margin-bottom:-2px;
+  -webkit-text-stroke-width:5px;filter:drop-shadow(0 4px 0 var(--acid-dark)) drop-shadow(0 7px 0 var(--ink))}
+.wm{font-family:var(--disp);font-size:clamp(58px,14vw,200px);line-height:.78;letter-spacing:-.03em;flex:0 0 auto}
+.herostack .stage{position:relative;z-index:1;margin:0;width:min(320px,30vw);flex:0 0 auto}
 #hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,var(--acid-2) 0%,var(--acid) 46%,var(--acid-dark) 130%);z-index:-2}
 .rays{position:absolute;inset:-30%;z-index:-1;background:repeating-conic-gradient(from 0deg at 50% 48%,rgba(255,255,255,.16) 0deg 6deg,transparent 6deg 12deg);animation:spin 70s linear infinite;opacity:.55}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -131,7 +133,22 @@ section{padding:clamp(46px,7vw,96px) clamp(16px,5vw,60px);position:relative}
 #h3{top:2%;height:36%}
 #h2{top:38%;height:24%}
 #h1{top:62%;height:36%}
-.scrollcue{margin-top:26px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.7;animation:bob 2s infinite}
+/* step in it */
+.stepwrap{margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:9px}
+.stepbtn{font-family:var(--disp);font-size:clamp(17px,2.6vw,26px);letter-spacing:.02em;padding:16px 40px;cursor:pointer;color:var(--ink);
+  background:linear-gradient(180deg,#fff,#dfe6dc 52%,#9aa795);border:3px solid var(--ink);box-shadow:0 8px 0 var(--ink),0 14px 24px rgba(10,30,0,.35);transition:.1s}
+.stepbtn:hover{background:linear-gradient(180deg,#fff,#f2f8ee 52%,#c6d2c1)}
+.stepbtn:active{transform:translateY(7px);box-shadow:0 1px 0 var(--ink)}
+.stepnote{font-size:12px;letter-spacing:.18em;text-transform:uppercase;opacity:.75;min-height:16px;text-align:center;padding:0 12px}
+.stepstat{display:flex;gap:18px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.6}
+.stepstat b{font-weight:600}
+.money{position:fixed;top:-70px;z-index:86;pointer-events:none;width:52px;height:29px;border:2px solid var(--ink);border-radius:4px;
+  background:linear-gradient(180deg,#e6ffb4,#9ce62f 60%,#6fae10);display:flex;align-items:center;justify-content:center;
+  font-family:var(--disp);font-size:15px;color:var(--ink);box-shadow:2px 3px 0 rgba(13,26,0,.35);will-change:transform}
+@keyframes fall{from{transform:translate3d(0,0,0) rotate(0deg)}to{transform:translate3d(var(--dx),112svh,0) rotate(var(--r))}}
+.shine{animation:shineflash .5s}
+@keyframes shineflash{0%{filter:brightness(1)}30%{filter:brightness(1.9) contrast(1.15)}100%{filter:brightness(1)}}
+.scrollcue{margin-top:22px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.7;animation:bob 2s infinite}
 @keyframes bob{50%{transform:translateY(6px)}}
 
 /* ---------- marquee ---------- */
@@ -234,6 +251,10 @@ footer .big{font-family:var(--disp);font-size:clamp(30px,9vw,90px);letter-spacin
   footer{padding-bottom:64px}
   .sndbox{bottom:46px}
   .chrome{-webkit-text-stroke-width:4px}
+  .premark{font-size:clamp(26px,9vw,64px);margin-bottom:34px;-webkit-text-stroke-width:3px;filter:drop-shadow(0 3px 0 var(--ink))}
+  .herostack .wm{font-size:19vw}
+  .herostack .stage{width:34vw}
+  .stepbtn{padding:15px 30px}
   .topbar nav{display:none}
   .topbar{font-size:10px;letter-spacing:.14em}
 }
@@ -243,9 +264,9 @@ footer .big{font-family:var(--disp);font-size:clamp(30px,9vw,90px);letter-spacin
 
 <!-- ================= GATE ================= -->
 <div id="gate">
-  <h1 class="gate-mark chrome">POOP</h1>
-  <div class="gate-sub">click to enter the pyramid</div>
-  <div class="gate-note">three floors · one shine</div>
+  <h1 class="gate-mark chrome">MONEY<br>POOP</h1>
+  <div class="gate-sub">click to step in it</div>
+  <div class="gate-note">get dirty · get paid</div>
 </div>
 
 <!-- ================= PRELOADER ================= -->
@@ -271,21 +292,28 @@ footer .big{font-family:var(--disp);font-size:clamp(30px,9vw,90px);letter-spacin
 <!-- ================= HERO ================= -->
 <section id="hero">
   <div class="rays"></div>
+  <div class="premark chrome">MONEY</div>
   <div class="herostack">
-    <h1 class="wordmark chrome">POOP</h1>
+    <h1 class="wm chrome" style="margin:0">PO</h1>
     <div class="stage">
       <img src="assets/cut-poop.webp" alt="the pyramid itself: three chrome floors stacked, the top one polished until it hurts to look at" id="hero-img">
       <div class="hot" id="h3" data-lab="floor 3 — the curl · gets the light"></div>
       <div class="hot" id="h2" data-lab="floor 2 — the middle · holds the curl"></div>
       <div class="hot" id="h1" data-lab="floor 1 — the base · holds everything"></div>
     </div>
+    <div class="wm chrome">OP</div>
   </div>
   <div class="tick">$POOP</div>
-  <p class="slogan">i am a pyramid. three floors, wide at the bottom, shiny little curl at the top. everybody who walks in says the same sentence and everybody stays on the floor they walked in on.</p>
+  <p class="slogan">there is an old rule that everybody's grandmother knows: you step in something like me, and money shows up right after. i did not invent that rule. i just stand here being extremely shiny and waiting for the next person willing to ruin their shoes.</p>
+  <div class="stepwrap">
+    <button class="stepbtn" id="stepbtn">STEP IN IT</button>
+    <div class="stepnote" id="stepnote">go on. get dirty. it pays.</div>
+    <div class="stepstat"><span>shoes ruined: <b id="cnt">0</b></span><span>luck collected: <b id="luck">0</b></span></div>
+  </div>
   <div class="scrollcue">scroll down · the stairs only go around</div>
 </section>
 
-<div class="mq"><span>three floors&nbsp;·&nbsp;one shine&nbsp;·&nbsp;bring three friends&nbsp;·&nbsp;they bring three friends&nbsp;·&nbsp;the curl is fine&nbsp;·&nbsp;thank you for holding the structure&nbsp;·&nbsp;three floors&nbsp;·&nbsp;one shine&nbsp;·&nbsp;bring three friends&nbsp;·&nbsp;they bring three friends&nbsp;·&nbsp;the curl is fine&nbsp;·&nbsp;thank you for holding the structure&nbsp;·&nbsp;</span></div>
+<div class="mq"><span>step in it&nbsp;·&nbsp;money follows&nbsp;·&nbsp;get dirty&nbsp;·&nbsp;get paid&nbsp;·&nbsp;your grandmother was right&nbsp;·&nbsp;ruin the shoes, keep the luck&nbsp;·&nbsp;step in it&nbsp;·&nbsp;money follows&nbsp;·&nbsp;get dirty&nbsp;·&nbsp;get paid&nbsp;·&nbsp;your grandmother was right&nbsp;·&nbsp;ruin the shoes, keep the luck&nbsp;·&nbsp;</span></div>
 
 <!-- ================= STRUCTURE ================= -->
 <section id="structure">
@@ -343,10 +371,10 @@ footer .big{font-family:var(--disp);font-size:clamp(30px,9vw,90px);letter-spacin
     <div class="kicker">03 — what is this</div>
     <h2 class="h">WHAT IS THIS</h2>
     <div class="lore" style="margin-top:20px">
-      <p>i am shaped like a pyramid on purpose. three floors, stacked, wide at the bottom, narrow at the top, exactly the shape somebody draws on a whiteboard right before the room goes quiet. i did not choose this shape, but i have grown extremely comfortable inside it.</p>
-      <p>the bottom floor holds up the middle floor. the middle floor holds up the curl. the curl holds up absolutely nothing and receives, by my count, about ninety per cent of all available lighting. this arrangement has never been challenged because everyone is busy looking upwards.</p>
-      <p>people arrive here every day, look at me for a while, and then say the sentence. the sentence is always the same and it is always delivered with total confidence: i will be the curl. nobody has ever been the curl. the curl was already here, it is original equipment, and it is buffed twice a day by hands that are not its own.</p>
-      <p>you are welcome to climb. the stairs are real, the handrail is chrome, the lighting is genuinely lovely, and you can go up as long as you like. i just think it is fair to mention, before you start, that i checked the floor plan myself and the stairs only go around.</p>
+      <p>the rule is older than money and every grandmother on earth knows it: you step in something like me, you say a word you would not say in front of your mother, and then money arrives. nobody has ever explained the mechanism. i stopped asking somewhere around the year 1400 and started charging instead.</p>
+      <p>this is the whole coin, and it fits in one line: step in it, money follows. i am the shiniest thing you will ever have the good fortune to ruin your shoes on, and i am standing right here in the open, chrome-plated, patient, completely unbothered by the smell of my own success.</p>
+      <p>people show up every day with clean shoes and a very simple plan: touch it once, get lucky, leave immediately. nobody leaves immediately. the shine gets into your head, and then you are on the internet at three in the morning explaining to a stranger why a pile of money-luck deserves a chart.</p>
+      <p>step in me as many times as you like. it is free, it works, and the only real cost is that from now on everyone at your table knows exactly what you have been doing with your evening. wipe your shoes on the way out, or do not. the money does not check.</p>
     </div>
   </div>
 </section>
@@ -406,8 +434,8 @@ footer .big{font-family:var(--disp);font-size:clamp(30px,9vw,90px);letter-spacin
 </main>
 
 <footer>
-  <div class="big chrome" style="-webkit-text-stroke-color:var(--acid);filter:none">POOP</div>
-  <div>three floors · one shine · you are on floor 1</div>
+  <div class="big chrome" style="-webkit-text-stroke-color:var(--acid);filter:none">MONEY POOP</div>
+  <div>step in it · money follows · wipe your shoes later</div>
 </footer>
 
 <div class="mobca ca">contract: <b>soon</b> — tap to copy</div>
@@ -478,6 +506,79 @@ footer .big{font-family:var(--disp);font-size:clamp(30px,9vw,90px);letter-spacin
     setTimeout(finish,7000); /* safety */
   });
   document.getElementById('lskip').addEventListener('click',function(e){ e.stopPropagation(); finish(); });
+
+  /* ---------- STEP IN IT: money rain ---------- */
+  var steps=0, luck=0, heroImg2=document.getElementById('hero-img'),
+      cntEl=document.getElementById('cnt'), luckEl=document.getElementById('luck'),
+      noteEl=document.getElementById('stepnote');
+  var NOTES=[
+    'go on. get dirty. it pays.',
+    'that is one shoe gone. money is already on its way.',
+    'your left foot has never been luckier.',
+    'the neighbours are watching. keep going.',
+    'you have officially stopped pretending this was an accident.',
+    'both shoes. no regrets. considerable wealth.',
+    'a stranger just called you a genius. he was standing very far away.',
+    'you are now the reason the rule exists.',
+    'nothing left to ruin. the money does not check anyway.'
+  ];
+  function cash(freq){
+    if(muted) return;
+    try{
+      if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+      [0,0.07].forEach(function(off,k){
+        var o=actx.createOscillator(), g=actx.createGain();
+        o.type='triangle'; o.frequency.value=(k?1560:1040)+(Math.random()*40-20);
+        g.gain.value=.06*vol;
+        o.connect(g); g.connect(actx.destination);
+        o.start(actx.currentTime+off);
+        g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime+off+.22);
+        o.stop(actx.currentTime+off+.24);
+      });
+    }catch(e){}
+  }
+  function squelch(){
+    if(muted) return;
+    try{
+      if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+      var o=actx.createOscillator(), g=actx.createGain();
+      o.type='sawtooth'; o.frequency.setValueAtTime(180,actx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(48,actx.currentTime+.18);
+      g.gain.value=.05*vol;
+      o.connect(g); g.connect(actx.destination); o.start();
+      g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+.2);
+      o.stop(actx.currentTime+.22);
+    }catch(e){}
+  }
+  function rain(n){
+    for(var i=0;i<n;i++){
+      (function(k){
+        setTimeout(function(){
+          var b=document.createElement('div');
+          b.className='money'; b.textContent='$';
+          b.style.left=(Math.random()*96)+'vw';
+          var dur=(2.1+Math.random()*1.8).toFixed(2);
+          b.style.setProperty('--r',(Math.random()*900-450).toFixed(0)+'deg');
+          b.style.setProperty('--dx',(Math.random()*120-60).toFixed(0)+'px');
+          b.style.animation='fall '+dur+'s linear forwards';
+          document.body.appendChild(b);
+          setTimeout(function(){ b.remove(); }, dur*1000+120);
+        }, k*45);
+      })(i);
+    }
+  }
+  function stepIn(){
+    steps++; luck+=Math.floor(Math.random()*400)+120;
+    cntEl.textContent=steps; luckEl.textContent=luck.toLocaleString('en-US');
+    noteEl.textContent=NOTES[Math.min(steps,NOTES.length-1)];
+    rain(Math.min(8+steps*2,26));
+    squelch(); setTimeout(cash,120);
+    if(heroImg2){ heroImg2.classList.remove('shine'); void heroImg2.offsetWidth; heroImg2.classList.add('shine'); }
+    try{ localStorage.setItem('poop-steps',steps); }catch(e){}
+  }
+  document.getElementById('stepbtn').addEventListener('click',stepIn);
+  var heroStage=document.querySelector('#hero .stage');
+  if(heroStage){ heroStage.style.cursor='pointer'; heroStage.addEventListener('click',stepIn); }
 
   /* ---------- the math ---------- */
   var lv=document.getElementById('lv'), ppl=document.getElementById('ppl'),
