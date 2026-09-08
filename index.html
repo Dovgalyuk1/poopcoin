@@ -109,16 +109,19 @@ section{padding:clamp(46px,7vw,96px) clamp(16px,5vw,60px);position:relative}
 .wrap{max-width:1160px;margin:0 auto}
 
 /* ---------- hero ---------- */
-#hero{min-height:calc(100svh - 34px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:20px;overflow:hidden}
+#hero{min-height:calc(100svh - 34px);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding-top:clamp(8px,2vh,24px);overflow:hidden}
+.herostack{position:relative;width:100%;display:flex;align-items:center;justify-content:center;height:clamp(300px,54svh,560px)}
+.herostack .wordmark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:0;width:100%}
+.herostack .stage{position:relative;z-index:1;margin:0}
 #hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,var(--acid-2) 0%,var(--acid) 46%,var(--acid-dark) 130%);z-index:-2}
 .rays{position:absolute;inset:-30%;z-index:-1;background:repeating-conic-gradient(from 0deg at 50% 48%,rgba(255,255,255,.16) 0deg 6deg,transparent 6deg 12deg);animation:spin 70s linear infinite;opacity:.55}
 @keyframes spin{to{transform:rotate(360deg)}}
-.wordmark{font-size:clamp(74px,19vw,250px);line-height:.82;letter-spacing:-.04em;margin:0}
+.wordmark{font-size:clamp(66px,17vw,230px);line-height:.82;letter-spacing:-.04em;margin:0}
 .tick{display:inline-block;margin-top:6px;font-size:12px;letter-spacing:.4em;text-transform:uppercase;background:var(--ink);color:var(--acid);padding:7px 16px}
 .slogan{max-width:640px;margin:22px auto 0;font-size:clamp(14px,1.7vw,18px);line-height:1.55}
 
 /* poop stage */
-.stage{position:relative;width:min(440px,74vw);margin:26px auto 0;filter:drop-shadow(0 26px 22px rgba(20,50,0,.35))}
+.stage{position:relative;width:min(360px,58vw);margin:26px auto 0;filter:drop-shadow(0 26px 22px rgba(20,50,0,.35))}
 .stage img{animation:float 5.5s ease-in-out infinite;will-change:transform}
 @keyframes float{50%{transform:translateY(-16px) rotate(-1.2deg)}}
 .hot{position:absolute;left:0;right:0;cursor:crosshair}
@@ -268,15 +271,17 @@ footer .big{font-family:var(--disp);font-size:clamp(30px,9vw,90px);letter-spacin
 <!-- ================= HERO ================= -->
 <section id="hero">
   <div class="rays"></div>
-  <h1 class="wordmark chrome">POOP</h1>
+  <div class="herostack">
+    <h1 class="wordmark chrome">POOP</h1>
+    <div class="stage">
+      <img src="assets/cut-poop.webp" alt="the pyramid itself: three chrome floors stacked, the top one polished until it hurts to look at" id="hero-img">
+      <div class="hot" id="h3" data-lab="floor 3 — the curl · gets the light"></div>
+      <div class="hot" id="h2" data-lab="floor 2 — the middle · holds the curl"></div>
+      <div class="hot" id="h1" data-lab="floor 1 — the base · holds everything"></div>
+    </div>
+  </div>
   <div class="tick">$POOP</div>
   <p class="slogan">i am a pyramid. three floors, wide at the bottom, shiny little curl at the top. everybody who walks in says the same sentence and everybody stays on the floor they walked in on.</p>
-  <div class="stage">
-    <img src="assets/cut-poop.webp" alt="the pyramid itself: three chrome floors stacked, the top one polished until it hurts to look at" id="hero-img">
-    <div class="hot" id="h3" data-lab="floor 3 — the curl · gets the light"></div>
-    <div class="hot" id="h2" data-lab="floor 2 — the middle · holds the curl"></div>
-    <div class="hot" id="h1" data-lab="floor 1 — the base · holds everything"></div>
-  </div>
   <div class="scrollcue">scroll down · the stairs only go around</div>
 </section>
 
